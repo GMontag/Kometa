@@ -119,6 +119,7 @@ class TMDbMovie(TMDBObj):
         self.studio = data["studio"] if isinstance(data, dict) else data.companies[0].name if data.companies else None
         self.collection_id = data["collection_id"] if isinstance(data, dict) else data.collection.id if data.collection else None
         self.collection_name = data["collection_name"] if isinstance(data, dict) else data.collection.name if data.collection else None
+        self.runtime = data["runtime"] if isinstance(data, dict) else data.runtime
 
         if self._tmdb.cache and not ignore_cache:
             self._tmdb.cache.update_tmdb_movie(expired, self, self._tmdb.expiration)
@@ -486,6 +487,8 @@ class TMDb:
                 attr = item.vote_average
             elif filter_attr == "tmdb_year":
                 attr = item.release_date.year if is_movie else item.first_air_date.year
+            elif filter_attr == "duration":
+                attr = item.runtime
             if util.is_number_filter(attr, modifier, filter_data):
                 return False
         elif filter_attr in ["tmdb_genre", "tmdb_keyword", "origin_country"]:
