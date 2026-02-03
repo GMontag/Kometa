@@ -173,6 +173,7 @@ class Cache:
                     release_date TEXT,
                     collection_id INTEGER,
                     collection_name TEXT,
+                    runtime INTEGER,
                     expiration_date TEXT)"""
                 )
                 cursor.execute(
@@ -647,6 +648,7 @@ class Cache:
                     tmdb_dict["release_date"] = datetime.strptime(row["release_date"], "%Y-%m-%d") if row["release_date"] else None
                     tmdb_dict["collection_id"] = row["collection_id"] if row["collection_id"] else None
                     tmdb_dict["collection_name"] = row["collection_name"] if row["collection_name"] else None
+                    tmdb_dict["runtime"] = row["runtime"] if row["runtime"] else None
                     datetime_object = datetime.strptime(row["expiration_date"], "%Y-%m-%d")
                     time_between_insertion = datetime.now() - datetime_object
                     expired = time_between_insertion.days > expiration
@@ -661,11 +663,11 @@ class Cache:
                 update_sql = "UPDATE tmdb_movie_data SET title = ?, original_title = ?, studio = ?, overview = ?, tagline = ?, imdb_id = ?, " \
                              "poster_url = ?, backdrop_url = ?, vote_count = ?, vote_average = ?, language_iso = ?, " \
                              "language_name = ?, genres = ?, keywords = ?, release_date = ?, collection_id = ?, " \
-                             "collection_name = ?, expiration_date = ? WHERE tmdb_id = ?"
+                             "collection_name = ?, runtime = ?, expiration_date = ? WHERE tmdb_id = ?"
                 cursor.execute(update_sql, (
                     obj.title, obj.original_title, obj.studio, obj.overview, obj.tagline, obj.imdb_id, obj.poster_url, obj.backdrop_url,
                     obj.vote_count, obj.vote_average, obj.language_iso, obj.language_name, "|".join(obj.genres), "|".join(obj.keywords),
-                    obj.release_date.strftime("%Y-%m-%d") if obj.release_date else None, obj.collection_id, obj.collection_name,
+                    obj.release_date.strftime("%Y-%m-%d") if obj.release_date else None, obj.collection_id, obj.collection_name, obj.runtime,
                     expiration_date.strftime("%Y-%m-%d"), obj.tmdb_id
                 ))
 
