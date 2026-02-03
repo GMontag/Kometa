@@ -152,7 +152,7 @@ In addition, templates also have a few special attributes that they can use:
     values to compare aginst. Every condition block must also have the `value` key which will be the value of the 
     Template Variable if all the conditions in that block are met.
 
-    There are three ways to compare values:
+    There are four ways to compare values:
 
     1. Using no modifier:
 
@@ -166,6 +166,12 @@ In addition, templates also have a few special attributes that they can use:
 
         * While `true` the Template Variable specified must exist in the template call.
         * While anything but `true` the Template Variable specified must not exist in the template call.
+
+    4. Using the contains modifier by appending `.contains` to the key Template Variable:
+    
+        * The given Template Variable's value may be a list of values.
+        * If the static value is a single value then it must be equal to the Template Variable's value or in the list of values.
+        * If the static value is a list of values, then all static values must be in the Template Variable's list of values.
 
     ???+ example "Example"
 

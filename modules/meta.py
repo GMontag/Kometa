@@ -420,6 +420,20 @@ class DataFile:
                                                 error_text = f'in {var_value}'
                                         elif str(con_var_value) == str(var_value):
                                             error_text = f'is "{var_value}"'
+                                elif var_key.endswith(".contains"):
+                                    var_name = var_key[:-9]
+                                    if var_name in variables or var_name in default:
+                                        con_var_value = variables[var_name] if var_name in variables else default[var_name]
+                                        if not isinstance(con_var_value, list):
+                                            con_var_value = [con_var_value]
+                                        if isinstance(var_value, list):
+                                            for value in var_value:
+                                                if value not in con_var_value:
+                                                    error_text = f'doesn\'t contain all of {var_value}'
+                                        elif var_value not in con_var_value:
+                                            error_text = f'doesn\'t contain {var_value}'
+                                    else:
+                                        error_text = f': {var_name} is not a variable provided or a default variable'
                                 elif var_key in variables or var_key in default:
                                     con_var_value = variables[var_key] if var_key in variables else default[var_key]
                                     if isinstance(var_value, list):
